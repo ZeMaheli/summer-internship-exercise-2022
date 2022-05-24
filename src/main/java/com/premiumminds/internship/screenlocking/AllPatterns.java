@@ -7,12 +7,23 @@ public class AllPatterns implements Callable<Integer> {
     private int max;
     private int length;
 
+    /**
+     * Main initializer of class
+     * @param m Starting point
+     * @param n Length of pattern
+     */
     public AllPatterns(int m, int n){
         max = m;
         length = n;
     }
 
-    public static int numberOfPatterns(int start, int length) {
+    /**
+     * Calculates number of paths that can be formed with a starting point and a length
+     * @param start Starting point
+     * @param length Length of pattern
+     * @return number of paths
+     */
+    public int numberOfPatterns(int start, int length) {
         // Keep a recod of invalid points on the path between two selected points 
         int skip[][] = new int[10][10];
         //In order to point 1 connect to point 3 and vice versa, point 2 must be visited
@@ -28,8 +39,16 @@ public class AllPatterns implements Callable<Integer> {
         boolean visited[] = new boolean[10];
         return DFS(visited, skip, start, length);
     }
-    
-    private static int DFS(boolean[] visited, int[][] skip, int cur, int remain) {
+
+    /**
+     * Applies the DFS (Depth-First-Search) algorithm to a starting point with a certain length
+     * @param visited boolean array with all the visited points
+     * @param skip multidimensional array with the point necessary to be visited in order to connect the two points
+     * @param cur current point
+     * @param remain remainder of the length we need to go through
+     * @return number of possible paths 
+     */
+    private int DFS(boolean[] visited, int[][] skip, int cur, int remain) {
         // Base case: out of bounds
         if (remain < 1) return 0;
         // max legnth reached
@@ -40,18 +59,15 @@ public class AllPatterns implements Callable<Integer> {
   
         for (int i = 1; i <= 9; i++) {
             // Next point must be unvisited
+            // AND
             // There is no point between current and next or skip point is already visited
             if (!visited[i] && (skip[cur][i] == 0 || visited[skip[cur][i]])) {
                 res += DFS(visited, skip, i, remain-1);
             }
         }
-        // Mark the current one unvisited so we can continue to search other paths  
+        // Mark the current one unvisited so we can continue to search for other paths
         visited[cur] = false;
         return res;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(numberOfPatterns(5,2));
     }
 
     @Override
