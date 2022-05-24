@@ -1,5 +1,7 @@
 package com.premiumminds.internship.screenlocking;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
@@ -14,6 +16,7 @@ class ScreenLockinPattern implements IScreenLockinPattern {
   * @return number of patterns
   */
   public Future<Integer> countPatternsFrom(int firstPoint,int length) {
-    throw new RuntimeException("Not Implemented Yet");
-  };
+    ExecutorService service = Executors.newSingleThreadExecutor();   
+    return service.submit(new AllPatterns(firstPoint,length));
+  }
 }
